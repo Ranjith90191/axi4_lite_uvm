@@ -1,5 +1,0 @@
-tb_top.dut.W_ADDR2
-tb_top.dut.W_BOTH1
-tb_top.dut.W_DATA3
-tb_top.dut.W_IDLE0
-tb_top.dut.W_RESP4
