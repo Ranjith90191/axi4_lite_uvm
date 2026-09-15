@@ -34,9 +34,8 @@ class axi4l_test extends uvm_test;
 
     `uvm_info(get_type_name(), "Starting sequence now...", UVM_LOW)
     seq.start(env.agt.sqr);
-    #2000ns;
     `uvm_info(get_type_name(), "Sequence finished dispatching, draining bus...", UVM_LOW)
-    
+    #2000ns
     phase.drop_objection(this);
   endtask
 endclass

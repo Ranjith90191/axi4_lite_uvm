@@ -287,7 +287,7 @@
 0 /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/systemverilog/reg/snps_uvm_reg_bank.svh
 0 vcs/vcs_uvm_alt.sv
 0 /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/systemverilog/vcs/vcs_uvm_alt.sv
-35
+36
 +incdir+/fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2
 +incdir+/fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/
 -Mamsrun=
@@ -316,6 +316,7 @@
 -ntb_opts
 -picarchive
 -sverilog
+-timescale=1ns/1ps
 /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/linux64/bin/vcs1
 /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/uvm_pkg.sv
 uvm-1.2
@@ -383,7 +384,7 @@ DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-YzdP7xbTow,guid=073d06f106a8e88
 COLORTERM=truecolor
 0
 162
-1789454695 axi4l_test.sv
+1789455171 axi4l_test.sv
 1789445550 axi4l_env.sv
 1789445556 axi4l_agent.sv
 1789445384 axi4l_scoreboard.sv
@@ -552,5 +553,5 @@ COLORTERM=truecolor
 1631416743 /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/linux64/lib/liberrorinf.so
 1631416702 /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/linux64/lib/libsnpsmalloc.so
 1631416739 /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/linux64/lib/libvfs.so
-1789454710 simv.daidir
+1789455225 simv.daidir
 -1 partitionlib

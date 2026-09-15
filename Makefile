@@ -12,7 +12,7 @@ VCS      := vcs
 COV_DIR  := cov_work
 COV_OPTS := -cm line+cond+fsm+branch+tgl -cm_dir $(COV_DIR)
 
-VCS_OPTS := -sverilog -ntb_opts uvm-1.2 -full64 -f $(FILELIST) $(COV_OPTS)
+VCS_OPTS := -sverilog -timescale=1ns/1ps -ntb_opts uvm-1.2 -full64 -f $(FILELIST) $(COV_OPTS)
 
 RED   := \033[0;31m
 GREEN := \033[0;32m
