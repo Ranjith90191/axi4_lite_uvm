@@ -40,7 +40,7 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
       wait (wr_req_q.size() > 0);
       r = wr_req_q.pop_front();
       aw_q.push_back(r); w_q.push_back(r);
-      wait (aw_q.size() == 0 && w_q.size() == 0 && b_q.size() == 0); // Slave handles 1 active write[cite: 1]
+      wait (aw_q.size() == 0 && w_q.size() == 0 && b_q.size() == 0);
     end
   endtask
 
@@ -50,7 +50,7 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
       wait (rd_req_q.size() > 0);
       r = rd_req_q.pop_front();
       ar_q.push_back(r);
-      wait (ar_q.size() == 0 && r_q.size() == 0); // Slave handles 1 active read[cite: 1]
+      wait (ar_q.size() == 0 && r_q.size() == 0);
     end
   endtask
 

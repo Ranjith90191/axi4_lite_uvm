@@ -1,6 +1,6 @@
 class axi4l_seq_item extends uvm_sequence_item;
   rand bit [1:0] txn_sel;
-  rand bit [15:0] wait_cfg_vector; // [3:0]=AW, [7:4]=W, [11:8]=AR
+  rand bit [15:0] wait_cfg_vector; 
 
   rand bit [31:0] AWADDR;
   rand bit [2:0]  AWPROT;
@@ -27,7 +27,7 @@ class axi4l_seq_item extends uvm_sequence_item;
   endfunction
 
   constraint addr_c {
-    AWADDR <= 32'h3F; AWADDR[1:0] == 2'b00; // Aligned byte addressing[cite: 1]
+    AWADDR <= 32'h3F; AWADDR[1:0] == 2'b00; 
     ARADDR <= 32'h3F; ARADDR[1:0] == 2'b00;
   }
 endclass

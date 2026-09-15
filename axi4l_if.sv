@@ -1,28 +1,28 @@
 interface axi4l_if(input logic ACLK, input logic ARESETn);
-  // Write Address Channel[cite: 1]
+  // Write Address Channel
   logic [31:0] AWADDR;
   logic [2:0]  AWPROT;
   logic        AWVALID;
   logic        AWREADY;
 
-  // Write Data Channel[cite: 1]
+  // Write Data Channel
   logic [31:0] WDATA;
   logic [3:0]  WSTRB;
   logic        WVALID;
   logic        WREADY;
 
-  // Write Response Channel[cite: 1]
+  // Write Response Channel
   logic [1:0]  BRESP;
   logic        BVALID;
   logic        BREADY;
 
-  // Read Address Channel[cite: 1]
+  // Read Address Channel
   logic [31:0] ARADDR;
   logic [2:0]  ARPROT;
   logic        ARVALID;
   logic        ARREADY;
 
-  // Read Data Channel[cite: 1]
+  // Read Data Channel
   logic [31:0] RDATA;
   logic [1:0]  RRESP;
   logic        RVALID;

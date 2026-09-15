@@ -16,7 +16,6 @@ class axi4l_monitor extends uvm_monitor;
   endfunction
 
   virtual task run_phase(uvm_phase phase);
-    // FIX 1: Wait for reset to finish so signals are no longer 'X'
     wait (vif.ARESETn === 1'b1);
     
     fork 
@@ -32,7 +31,6 @@ class axi4l_monitor extends uvm_monitor;
       
       fork
         begin
-          // FIX 2: Use !== 1'b1 to strictly handle 'X' states
           while (vif.mon_cb.AWVALID !== 1'b1 || vif.mon_cb.AWREADY !== 1'b1) @(vif.mon_cb);
           txn.AWADDR = vif.mon_cb.AWADDR; 
           txn.AWPROT = vif.mon_cb.AWPROT;

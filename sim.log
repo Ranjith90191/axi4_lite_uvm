@@ -1,27 +1,26 @@
 Chronologic VCS simulator copyright 1991-2020
 Contains Synopsys proprietary information.
-Compiler version Q-2020.03-SP2-8_Full64; Runtime version Q-2020.03-SP2-8_Full64;  Sep 15 09:34 2026
+Compiler version Q-2020.03-SP2-8_Full64; Runtime version Q-2020.03-SP2-8_Full64;  Sep 15 12:15 2026
 
  VCS Coverage Metrics Release Q-2020.03-SP2-8_Full64 Copyright (c) 1991-2020 by Synopsys Inc.
 UVM_INFO @ 0: reporter [RNTST] Running test axi4l_test...
-UVM_INFO axi4l_test.sv(37) @ 0: uvm_test_top [axi4l_test] Starting sequence now...
-UVM_INFO axi4l_test.sv(39) @ 20: uvm_test_top [axi4l_test] Sequence finished dispatching, draining bus...
-UVM_INFO /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/base/uvm_objection.svh(1276) @ 20: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
-UVM_INFO /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/base/uvm_report_server.svh(894) @ 20: reporter [UVM/REPORT/SERVER] 
+UVM_INFO axi4l_test.sv(36) @ 0: uvm_test_top [axi4l_test] Starting sequence now...
+UVM_FATAL /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/base/uvm_phase.svh(1495) @ 9200: reporter [PH_TIMEOUT] Default timeout of 9200 hit, indicating a probable testbench issue
+UVM_INFO /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/base/uvm_report_server.svh(894) @ 9200: reporter [UVM/REPORT/SERVER] 
 --- UVM Report Summary ---
 
 ** Report counts by severity
-UVM_INFO :    4
+UVM_INFO :    2
 UVM_WARNING :    0
 UVM_ERROR :    0
-UVM_FATAL :    0
+UVM_FATAL :    1
 ** Report counts by id
+[PH_TIMEOUT]     1
 [RNTST]     1
-[TEST_DONE]     1
-[axi4l_test]     2
+[axi4l_test]     1
 
-$finish called from file "/fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/base/uvm_root.svh", line 527.
-$finish at simulation time                   20
+$finish called from file "/fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/base/uvm_root.svh", line 135.
+$finish at simulation time                 9200
 
 ---------------------------------------------------------------------------
 VCS Coverage Metrics: during simulation line, cond, FSM, branch, tgl was monitored
@@ -30,6 +29,6 @@ VCS Coverage Metrics: during simulation line, cond, FSM, branch, tgl was monitor
  Coverage status: End of All Coverages ...
 
            V C S   S i m u l a t i o n   R e p o r t 
-Time: 20
-CPU Time:      0.500 seconds;       Data structure size:   0.4Mb
-Tue Sep 15 09:34:58 2026
+Time: 9200
+CPU Time:      0.680 seconds;       Data structure size:   0.3Mb
+Tue Sep 15 12:15:13 2026
