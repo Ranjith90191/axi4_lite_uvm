@@ -28,9 +28,19 @@ class axi4l_test extends uvm_test;
 
   virtual task run_phase(uvm_phase phase);
     axi4l_basic_seq seq = axi4l_basic_seq::type_id::create("seq");
+    
     phase.raise_objection(this);
+
+    // Wait until reset is released before launching sequence
+    #30ns;
+
+    `uvm_info(get_type_name(), "Starting sequence now...", UVM_LOW)
     seq.start(env.agt.sqr);
-    #100ns;
+    `uvm_info(get_type_name(), "Sequence finished dispatching, draining bus...", UVM_LOW)
+
+    // Drain time for all 20 transactions to finish on the AXI bus
+    #2000ns;
+    
     phase.drop_objection(this);
   endtask
 endclass

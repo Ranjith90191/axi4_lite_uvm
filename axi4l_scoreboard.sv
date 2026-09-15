@@ -1,5 +1,6 @@
 class axi4l_scoreboard extends uvm_scoreboard;
   `uvm_component_utils(axi4l_scoreboard)
+  
   uvm_tlm_analysis_fifo #(axi4l_seq_item) act_fifo;
   uvm_tlm_analysis_fifo #(axi4l_seq_item) exp_fifo;
 
@@ -15,14 +16,37 @@ class axi4l_scoreboard extends uvm_scoreboard;
 
   virtual task run_phase(uvm_phase phase);
     axi4l_seq_item act, exp;
+    bit match;
+    
     forever begin
-      exp_fifo.get(exp); act_fifo.get(act);
-      if (act.RESP !== exp.RESP)
+      exp_fifo.get(exp); 
+      act_fifo.get(act);
+      match = 1; // Assume pass initially
+      
+      // 1. Check AXI Response Code
+      if (act.RESP !== exp.RESP) begin
         `uvm_error("SCB_FAIL", $sformatf("RESP Mismatch. Act: %0h, Exp: %0h", act.RESP, exp.RESP))
-      if (act.txn_sel[`TXN_BIT_READ] && (act.RESP == `AXI_OKAY)) begin
-        if (act.RDATA !== exp.RDATA)
-          `uvm_error("SCB_FAIL", $sformatf("RDATA Mismatch. Act: %0h, Exp: %0h", act.RDATA, exp.RDATA))
+        match = 0;
       end
+      
+      // 2. Check Read Data (only if it was a read and RESP was OKAY)
+      if (act.txn_sel[`TXN_BIT_READ] && (act.RESP == `AXI_OKAY)) begin
+        if (act.RDATA !== exp.RDATA) begin
+          `uvm_error("SCB_FAIL", $sformatf("RDATA Mismatch at Addr %0h. Act: %0h, Exp: %0h", act.ARADDR, act.RDATA, exp.RDATA))
+          match = 0;
+        end
+      end
+      
+      // 3. Print Pass Message
+      if (match) begin
+        if (act.txn_sel[`TXN_BIT_WRITE]) begin
+          `uvm_info("SCB_PASS", $sformatf("WRITE PASS -> Addr: %0h | Data: %0h | RESP: %0h", act.AWADDR, act.DATA, act.RESP), UVM_LOW)
+        end
+        if (act.txn_sel[`TXN_BIT_READ]) begin
+          `uvm_info("SCB_PASS", $sformatf("READ PASS  -> Addr: %0h | RDATA: %0h | RESP: %0h", act.ARADDR, act.RDATA, act.RESP), UVM_LOW)
+        end
+      end
+      
     end
   endtask
 endclass

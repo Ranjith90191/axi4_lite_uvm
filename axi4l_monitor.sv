@@ -16,37 +16,54 @@ class axi4l_monitor extends uvm_monitor;
   endfunction
 
   virtual task run_phase(uvm_phase phase);
-    fork collect_writes(); collect_reads(); join
+    // FIX 1: Wait for reset to finish so signals are no longer 'X'
+    wait (vif.ARESETn === 1'b1);
+    
+    fork 
+      collect_writes(); 
+      collect_reads(); 
+    join
   endtask
 
   virtual task collect_writes();
     forever begin
       axi4l_seq_item txn = axi4l_seq_item::type_id::create("txn");
-      txn.txn_sel = (1 << `TXN_BIT_WRITE);
+      txn.txn_sel = (1 << `TXN_BIT_WRITE); 
+      
       fork
         begin
-          while (!(vif.mon_cb.AWVALID && vif.mon_cb.AWREADY)) @(vif.mon_cb);
-          txn.AWADDR = vif.mon_cb.AWADDR; txn.AWPROT = vif.mon_cb.AWPROT;
+          // FIX 2: Use !== 1'b1 to strictly handle 'X' states
+          while (vif.mon_cb.AWVALID !== 1'b1 || vif.mon_cb.AWREADY !== 1'b1) @(vif.mon_cb);
+          txn.AWADDR = vif.mon_cb.AWADDR; 
+          txn.AWPROT = vif.mon_cb.AWPROT;
         end
         begin
-          while (!(vif.mon_cb.WVALID && vif.mon_cb.WREADY)) @(vif.mon_cb);
-          txn.DATA  = vif.mon_cb.WDATA; txn.WSTRB = vif.mon_cb.WSTRB;
+          while (vif.mon_cb.WVALID !== 1'b1 || vif.mon_cb.WREADY !== 1'b1) @(vif.mon_cb);
+          txn.DATA  = vif.mon_cb.WDATA; 
+          txn.WSTRB = vif.mon_cb.WSTRB;
         end
       join
-      while (!(vif.mon_cb.BVALID && vif.mon_cb.BREADY)) @(vif.mon_cb);
+      
+      while (vif.mon_cb.BVALID !== 1'b1 || vif.mon_cb.BREADY !== 1'b1) @(vif.mon_cb);
       txn.RESP = vif.mon_cb.BRESP;
-      ap.write(txn);
+      
+      ap.write(txn); 
     end
   endtask
 
   virtual task collect_reads();
     forever begin
       axi4l_seq_item txn = axi4l_seq_item::type_id::create("txn");
-      txn.txn_sel = (1 << `TXN_BIT_READ);
-      while (!(vif.mon_cb.ARVALID && vif.mon_cb.ARREADY)) @(vif.mon_cb);
-      txn.ARADDR = vif.mon_cb.ARADDR; txn.ARPROT = vif.mon_cb.ARPROT;
-      while (!(vif.mon_cb.RVALID && vif.mon_cb.RREADY)) @(vif.mon_cb);
-      txn.RDATA = vif.mon_cb.RDATA; txn.RESP  = vif.mon_cb.RRESP;
+      txn.txn_sel = (1 << `TXN_BIT_READ); 
+      
+      while (vif.mon_cb.ARVALID !== 1'b1 || vif.mon_cb.ARREADY !== 1'b1) @(vif.mon_cb);
+      txn.ARADDR = vif.mon_cb.ARADDR; 
+      txn.ARPROT = vif.mon_cb.ARPROT;
+      
+      while (vif.mon_cb.RVALID !== 1'b1 || vif.mon_cb.RREADY !== 1'b1) @(vif.mon_cb);
+      txn.RDATA = vif.mon_cb.RDATA; 
+      txn.RESP  = vif.mon_cb.RRESP;
+      
       ap.write(txn);
     end
   endtask
