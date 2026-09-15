@@ -44,7 +44,7 @@ class axi4l_monitor extends uvm_monitor;
       
       while (vif.mon_cb.BVALID !== 1'b1 || vif.mon_cb.BREADY !== 1'b1) @(vif.mon_cb);
       txn.RESP = vif.mon_cb.BRESP;
-      
+         `uvm_info("MON_TRACE", "Transaction captured", UVM_LOW)
       ap.write(txn); 
     end
   endtask
@@ -61,7 +61,7 @@ class axi4l_monitor extends uvm_monitor;
       while (vif.mon_cb.RVALID !== 1'b1 || vif.mon_cb.RREADY !== 1'b1) @(vif.mon_cb);
       txn.RDATA = vif.mon_cb.RDATA; 
       txn.RESP  = vif.mon_cb.RRESP;
-      
+         `uvm_info("MON_TRACE", "Transaction captured", UVM_LOW)
       ap.write(txn);
     end
   endtask

@@ -20,6 +20,7 @@ class axi4l_ref_model extends uvm_component;
   virtual function void write_mon(axi4l_seq_item t);
     axi4l_seq_item exp = axi4l_seq_item::type_id::create("exp");
     exp.copy(t);
+       `uvm_info("REF_TRACE", "Ref model processed item", UVM_LOW)
     if (t.txn_sel[`TXN_BIT_WRITE]) process_write(exp);
     else if (t.txn_sel[`TXN_BIT_READ]) process_read(exp);
     exp_port.write(exp);

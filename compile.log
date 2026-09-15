@@ -1,5 +1,5 @@
                          Chronologic VCS (TM)
-      Version Q-2020.03-SP2-8_Full64 -- Tue Sep 15 12:23:32 2026
+      Version Q-2020.03-SP2-8_Full64 -- Tue Sep 15 12:32:47 2026
                Copyright (c) 1991-2020 by Synopsys Inc.
                          ALL RIGHTS RESERVED
 
@@ -334,19 +334,17 @@ VCS Coverage Metrics Release Q-2020.03-SP2-8_Full64 Copyright (c) 1991-2020 by S
 Starting vcs inline pass...
 7 modules and 0 UDP read.
 recompiling package vcs_paramclassrepository
-recompiling package _vcs_DPI_package
-recompiling package uvm_pkg
-recompiling module axi4_lite_slave
-recompiling module axi4l_if
 recompiling package axi4l_pkg
-recompiling module tb_top
-All of 7 modules done
+Both modules done.
+	However, due to incremental compilation, only 2 modules need to be compiled. 
 make[1]: Entering directory `/fetools/work_area/frontend/Batch_11/ranjith/Projects/UVM/axi4_lite/csrc'
 make[1]: Leaving directory `/fetools/work_area/frontend/Batch_11/ranjith/Projects/UVM/axi4_lite/csrc'
 make[1]: Entering directory `/fetools/work_area/frontend/Batch_11/ranjith/Projects/UVM/axi4_lite/csrc'
 rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+ld -shared  -Bsymbolic   -o .//../simv.daidir//_cuarc0.so objs/amcQw_d.o 
+rm -f _cuarc0.so
 if [ -x ../simv ]; then chmod a-x ../simv; fi
-g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/linux64/lib -L/fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/linux64/lib  -Wl,-rpath-link=./  /usr/lib64/libnuma.so.1 /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/linux64/lib/vpdlogstub.o uvm_dpi.o   objs/amcQw_d.o   _142230_archive_1.so  SIM_l.o      rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o          -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -lreader_common /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/linux64/lib/libBA.a -luclinative /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive       ./../simv.daidir/vc_hdrs.o    /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/linux64/lib/vcs_save_restore_new.o -ldl  -lc -lm -lpthread -ldl 
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/linux64/lib -L/fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/linux64/lib  -Wl,-rpath-link=./  /usr/lib64/libnuma.so.1 /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/linux64/lib/vpdlogstub.o uvm_dpi.o     _160296_archive_1.so _prev_archive_1.so _cuarc0.so  SIM_l.o      rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o          -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -lreader_common /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/linux64/lib/libBA.a -luclinative /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive       ./../simv.daidir/vc_hdrs.o    /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/linux64/lib/vcs_save_restore_new.o -ldl  -lc -lm -lpthread -ldl 
 ../simv up to date
 make[1]: Leaving directory `/fetools/work_area/frontend/Batch_11/ranjith/Projects/UVM/axi4_lite/csrc'
-CPU time: 9.158 seconds to compile + .452 seconds to elab + .346 seconds to link
+CPU time: 7.176 seconds to compile + .460 seconds to elab + .382 seconds to link

@@ -30,6 +30,7 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
       seq_item_port.get_next_item(req);
       if (req.txn_sel[`TXN_BIT_WRITE]) wr_req_q.push_back(req);
       if (req.txn_sel[`TXN_BIT_READ])  rd_req_q.push_back(req);
+         `uvm_info("DISPATCH_TRACE", $sformatf("Queued item, txn_sel=%0b", req.txn_sel), UVM_LOW)
       seq_item_port.item_done();
     end
   endtask
@@ -66,6 +67,7 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
       while (!vif.drv_cb.AWREADY) @(vif.drv_cb);
       vif.drv_cb.AWVALID <= 0;
       b_q.push_back(r);
+         `uvm_info("AW_TRACE", "AW handshake done", UVM_LOW)
     end
   endtask
 

@@ -30,12 +30,11 @@ class axi4l_test extends uvm_test;
     axi4l_basic_seq seq = axi4l_basic_seq::type_id::create("seq");
     
     phase.raise_objection(this);
-    #30ns;
+    #30;
 
     `uvm_info(get_type_name(), "Starting sequence now...", UVM_LOW)
     seq.start(env.agt.sqr);
     `uvm_info(get_type_name(), "Sequence finished dispatching, draining bus...", UVM_LOW)
-    #2000ns
     phase.drop_objection(this);
   endtask
 endclass
