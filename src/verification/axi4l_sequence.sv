@@ -1,6 +1,8 @@
 class axi4l_write_seq extends uvm_sequence #(axi4l_seq_item);
   `uvm_object_utils(axi4l_write_seq)
-  function new(string name="axi4l_write_seq"); super.new(name); endfunction
+  function new(string name="axi4l_write_seq");
+    super.new(name);
+  endfunction
 
   virtual task body();
     axi4l_seq_item req;
@@ -15,7 +17,9 @@ endclass
 
 class axi4l_read_seq extends uvm_sequence #(axi4l_seq_item);
   `uvm_object_utils(axi4l_read_seq)
-  function new(string name="axi4l_read_seq"); super.new(name); endfunction
+  function new(string name="axi4l_read_seq");
+    super.new(name);
+  endfunction
 
   virtual task body();
     axi4l_seq_item req;

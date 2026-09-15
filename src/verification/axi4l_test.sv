@@ -12,16 +12,17 @@ class axi4l_test extends uvm_test;
   endfunction
 
   virtual task run_phase(uvm_phase phase);
-    axi4l_write_seq seq = axi4l_write_seq::type_id::create("seq");
-    axi4l_read_seq seq1 = axi4l_read_seq::type_id::create("seq1");
+    axi4l_write_seq seq = axi4l_write_seq::type_id::create("seq");//write only
+    axi4l_read_seq seq1 = axi4l_read_seq::type_id::create("seq1");//read only
     phase.raise_objection(this);
     #30;
-
-    `uvm_info(get_type_name(), "Starting sequence now...", UVM_LOW)
+    `uvm_info(get_type_name(), "Starting Write only Sequence", UVM_LOW)
     seq.start(env.agt.sqr);
-    #20000;
+    #2000;
+    `uvm_info(get_type_name(), "Starting Read only Sequence", UVM_LOW)
     seq1.start(env.agt.sqr);
-    #20000;
+    #2000;
     phase.drop_objection(this);
   endtask
+
 endclass

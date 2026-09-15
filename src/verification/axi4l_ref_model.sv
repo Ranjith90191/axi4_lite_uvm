@@ -25,14 +25,13 @@ class axi4l_ref_model extends uvm_component;
     exp_port.write(exp);
   endfunction
 
-  local function void process_write(axi4l_seq_item txn);
+  function void process_write(axi4l_seq_item txn);
     bit [3:0] word_idx = txn.AWADDR[5:2]; 
     if (txn.AWADDR[1:0] != 2'b00) txn.RESP = `AXI_SLVERR;
     else if (txn.AWADDR > 32'h3F) txn.RESP = `AXI_DECERR;
     else if (word_idx >= 10 && word_idx <= 12) txn.RESP = `AXI_SLVERR; 
     else begin
       txn.RESP = `AXI_OKAY;
-
       if (txn.WSTRB[0]) mem[word_idx][7:0]   = txn.DATA[7:0];
       if (txn.WSTRB[1]) mem[word_idx][15:8]  = txn.DATA[15:8];
       if (txn.WSTRB[2]) mem[word_idx][23:16] = txn.DATA[23:16];
@@ -40,7 +39,7 @@ class axi4l_ref_model extends uvm_component;
     end
   endfunction
 
-  local function void process_read(axi4l_seq_item txn);
+  function void process_read(axi4l_seq_item txn);
     bit [3:0] word_idx = txn.ARADDR[5:2];
     if (txn.ARADDR[1:0] != 2'b00) txn.RESP = `AXI_SLVERR;
     else if (txn.ARADDR > 32'h3F) txn.RESP = `AXI_DECERR;

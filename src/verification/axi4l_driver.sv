@@ -2,8 +2,8 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
   `uvm_component_utils(axi4l_driver)
 
   virtual axi4l_if.DRV vif;
-  axi4l_seq_item wr_req_q[$], rd_req_q[$];
-  axi4l_seq_item aw_q[$], w_q[$], ar_q[$], b_q[$], r_q[$];
+  axi4l_seq_item wr_req_q[$],rd_req_q[$];
+  axi4l_seq_item aw_q[$],w_q[$],ar_q[$],b_q[$],r_q[$];
 
   function new(string name="axi4l_driver", uvm_component parent=null);
     super.new(name, parent);
@@ -19,8 +19,14 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
     reset_signals();
     wait (vif.ARESETn === 1'b1);
     fork
-      dispatch(); write_manager(); read_manager();
-      aw_thread(); w_thread(); ar_thread(); b_thread(); r_thread();
+      dispatch();
+      write_manager();
+      read_manager();
+      aw_thread();
+      w_thread();
+      ar_thread();
+      b_thread();
+      r_thread();
     join
   endtask
 
@@ -120,7 +126,10 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
   endtask
 
   virtual task reset_signals();
-    vif.drv_cb.AWVALID <= 0; vif.drv_cb.WVALID  <= 0; vif.drv_cb.ARVALID <= 0;
-    vif.drv_cb.BREADY  <= 0; vif.drv_cb.RREADY  <= 0;
+    vif.drv_cb.AWVALID <= 0;
+    vif.drv_cb.WVALID  <= 0;
+    vif.drv_cb.ARVALID <= 0;
+    vif.drv_cb.BREADY  <= 0;
+    vif.drv_cb.RREADY  <= 0;
   endtask
 endclass

@@ -22,22 +22,18 @@ class axi4l_scoreboard extends uvm_scoreboard;
       exp_fifo.get(exp); 
       act_fifo.get(act);
       match = 1; 
-      
-      // 1. Check AXI Response Code
+
       if (act.RESP !== exp.RESP) begin
         `uvm_error("SCB_FAIL", $sformatf("RESP Mismatch. Act: %0h, Exp: %0h ", act.RESP, exp.RESP))
-        
         if(act.txn_sel[`TXN_BIT_READ]) begin
           `uvm_error("SCB_FAIL", $sformatf("During Read Mismatch at Addr %0h. Act Data: %0h, Exp Data: %0h", act.ARADDR, act.RDATA, exp.RDATA))        
         end
         else begin
-          // FIXED: Used AWADDR and DATA for Write errors
           `uvm_error("SCB_FAIL", $sformatf("During Write Mismatch at Addr %0h. Act Data: %0h, Exp Data: %0h", act.AWADDR, act.DATA, exp.DATA))        
         end
         match = 0;
       end
       
-      // 2. Check Read Data (only if it was a read and RESP was OKAY)
       if (act.txn_sel[`TXN_BIT_READ] && (act.RESP == `AXI_OKAY)) begin
         if (act.RDATA !== exp.RDATA) begin
           `uvm_error("SCB_FAIL", $sformatf("RDATA Mismatch at Addr %0h. Act: %0h, Exp: %0h", act.ARADDR, act.RDATA, exp.RDATA))
@@ -45,7 +41,6 @@ class axi4l_scoreboard extends uvm_scoreboard;
         end
       end
       
-      // 3. Print Pass Message
       if (match) begin
         if (act.txn_sel[`TXN_BIT_WRITE]) begin
           `uvm_info("SCB_PASS", $sformatf("WRITE PASS -> Addr: %0h | Data: %0h | RESP: %0h", act.AWADDR, act.DATA, act.RESP), UVM_HIGH)

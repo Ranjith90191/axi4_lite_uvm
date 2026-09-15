@@ -27,7 +27,6 @@ class axi4l_monitor extends uvm_monitor;
     forever begin
       axi4l_seq_item txn = axi4l_seq_item::type_id::create("txn");
       txn.txn_sel = (1 << `TXN_BIT_WRITE); 
-      
       fork
         begin
           while (vif.mon_cb.AWVALID !== 1'b1 || vif.mon_cb.AWREADY !== 1'b1) @(vif.mon_cb);
@@ -42,7 +41,6 @@ class axi4l_monitor extends uvm_monitor;
           `uvm_info("MON_TRACE", "DATA HANDSHAKE DONE", UVM_FULL)
         end
       join
-      
       while (vif.mon_cb.BVALID !== 1'b1 || vif.mon_cb.BREADY !== 1'b1) @(vif.mon_cb);
       txn.RESP = vif.mon_cb.BRESP;
          `uvm_info("MON_TRACE", "Transaction captured", UVM_FULL)
@@ -54,12 +52,10 @@ class axi4l_monitor extends uvm_monitor;
     forever begin
       axi4l_seq_item txn = axi4l_seq_item::type_id::create("txn");
       txn.txn_sel = (1 << `TXN_BIT_READ); 
-      
       while (vif.mon_cb.ARVALID !== 1'b1 || vif.mon_cb.ARREADY !== 1'b1) @(vif.mon_cb);
       txn.ARADDR = vif.mon_cb.ARADDR; 
       txn.ARPROT = vif.mon_cb.ARPROT;
       `uvm_info("MON_TRACE", "ADDRESS captured", UVM_FULL)
-      
       while (vif.mon_cb.RVALID !== 1'b1 || vif.mon_cb.RREADY !== 1'b1) @(vif.mon_cb);
       txn.RDATA = vif.mon_cb.RDATA; 
       txn.RESP  = vif.mon_cb.RRESP;

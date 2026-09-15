@@ -27,8 +27,10 @@ class axi4l_seq_item extends uvm_sequence_item;
   endfunction
 
   constraint addr_c {
-    AWADDR <= 32'h3F; AWADDR[1:0] == 2'b00; 
-    ARADDR <= 32'h3F; ARADDR[1:0] == 2'b00;
+    AWADDR <= 32'h3F;
+    AWADDR[1:0] == 2'b00;
+    ARADDR <= 32'h3F;
+    ARADDR[1:0] == 2'b00;
   }
   constraint wait_cfg_vector_c{
   	wait_cfg_vector[3:0] == wait_cfg_vector[7:4];

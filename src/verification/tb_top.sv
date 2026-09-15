@@ -1,4 +1,3 @@
-
 import uvm_pkg::*;
 import axi4l_pkg::*;
 
@@ -6,13 +5,11 @@ module tb_top;
   logic ACLK;
   logic ARESETn;
 
-  // Clock generation
   initial begin
     ACLK = 0;
     forever #5 ACLK = ~ACLK; 
   end
 
-  // Reset generation
   initial begin
   ARESETn = 0;
   #5; 

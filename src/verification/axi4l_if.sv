@@ -1,32 +1,28 @@
 interface axi4l_if(input logic ACLK, input logic ARESETn);
   // Write Address Channel
   logic [31:0] AWADDR;
-  logic [2:0]  AWPROT;
-  logic        AWVALID;
-  logic        AWREADY;
-
+  logic [2:0] AWPROT;
+  logic AWVALID;
+  logic AWREADY;
   // Write Data Channel
   logic [31:0] WDATA;
-  logic [3:0]  WSTRB;
-  logic        WVALID;
-  logic        WREADY;
-
+  logic [3:0] WSTRB;
+  logic WVALID;
+  logic WREADY;
   // Write Response Channel
-  logic [1:0]  BRESP;
-  logic        BVALID;
-  logic        BREADY;
-
+  logic [1:0] BRESP;
+  logic BVALID;
+  logic BREADY;
   // Read Address Channel
   logic [31:0] ARADDR;
-  logic [2:0]  ARPROT;
-  logic        ARVALID;
-  logic        ARREADY;
-
+  logic [2:0] ARPROT;
+  logic ARVALID;
+  logic ARREADY;
   // Read Data Channel
   logic [31:0] RDATA;
-  logic [1:0]  RRESP;
-  logic        RVALID;
-  logic        RREADY;
+  logic [1:0] RRESP;
+  logic RVALID;
+  logic RREADY;
 
   // Clocking block for driver
   clocking drv_cb @(posedge ACLK);
