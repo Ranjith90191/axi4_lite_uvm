@@ -28,14 +28,14 @@ COMPILE_NOISE := ^(Parsing (design|included) file|Back to file|make\[1\]|rm -f _
 # --------------------------------------------------------------
 # Track EVERY .sv/.svh in cwd (not just what's in file_list.f).
 # --------------------------------------------------------------
-SRC_FILES := $(wildcard *.sv) $(wildcard *.svh)
+# 1. Track ALL files for recompilation triggers (using find to catch all subfolders)
+SRC_FILES := $(shell find . ../tb -type f \( -name '*.sv' -o -name '*.svh' \) | grep -vE 'csrc|simv|cov_work')
 
-# --------------------------------------------------------------
-# Discover test classes: any "class X extends ...*test*" in cwd sources.
-# Catches alu_base_test, test_ce, etc. regardless of naming scheme,
-# as long as the parent class name contains "test" (case-insensitive).
-# --------------------------------------------------------------
-TESTS := $(shell grep -hE 'class[[:space:]]+[A-Za-z_][A-Za-z0-9_]*[[:space:]]+extends[[:space:]]+[A-Za-z_][A-Za-z0-9_]*[Tt][Ee][Ss][Tt][A-Za-z0-9_]*' $(SRC_FILES) 2>/dev/null | sed -E 's/^[[:space:]]*class[[:space:]]+([A-Za-z_][A-Za-z0-9_]*)[[:space:]]+extends.*/\1/' | sort -u)
+# 2. Track ONLY test files for test discovery (much faster for grep)
+TEST_FILES := $(wildcard ../tb/tests/*.sv) $(wildcard ../tb/tests/*.svh)
+
+# 3. Update the TESTS variable to only search TEST_FILES
+TESTS := $(shell grep -hE 'class[[:space:]]+[A-Za-z_][A-Za-z0-9_]*[[:space:]]+extends[[:space:]]+[A-Za-z_][A-Za-z0-9_]*[Tt][Ee][Ss][Tt][A-Za-z0-9_]*' $(TEST_FILES) 2>/dev/null | sed -E 's/^[[:space:]]*class[[:space:]]+([A-Za-z_][A-Za-z0-9_]*)[[:space:]]+extends.*/\1/' | sort -u)
 
 .PHONY: all compile simulate sim coverage merge clean help tests
 
