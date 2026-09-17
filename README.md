@@ -222,42 +222,169 @@ All bugs found during verification are logged and tracked in [GitHub Issues](../
 
 ### Prerequisites
 
-- Synopsys VCS (tested with [VCS version])
-- UVM 1.2 library
-- Python 3.x (for regression script)
+- Synopsys VCS with UVM 1.2 (`-ntb_opts uvm-1.2`)
+- `urg` in PATH (bundled with VCS) — used for coverage report generation
+- GNU Make, Bash 4+
+- Python 3.x (for `scripts/run_regression.py`)
 
-### Compile and Run a Single Test
-
-```bash
-cd sim/
-make TEST=axi4l_normal_rw_test
-```
-
-### Run Full Regression
+All commands run from the `sim/` directory.
 
 ```bash
 cd sim/
-make regress
-# or
-python3 ../scripts/run_regression.py
 ```
 
-### Run with Coverage Collection
+---
+
+### 1. Compile
+
+Compiles the entire design with line, condition, FSM, branch, and toggle coverage enabled. Automatically recompiles if any `.sv` or `.svh` file in the project changes.
 
 ```bash
-cd sim/
-make TEST=axi4l_normal_rw_test COV=1
+make compile
 ```
 
-### Makefile Targets
+On success you'll see a green **COMPILE SUCCESS** banner with the top-level module name and CPU time. Errors print a red **COMPILE FAILED** banner with filtered error lines only.
 
-| Target | Description |
+---
+
+### 2. Discover Available Tests
+
+Lists all UVM test classes auto-discovered from `tb/tests/` by scanning for `class X extends *Test*` — no manual test list to maintain.
+
+```bash
+make tests
+```
+
+Example output:
+```
+Discovered tests:
+   1) axi4l_concurrent_test
+   2) axi4l_decerr_test
+   3) axi4l_fully_rand_test
+   4) axi4l_normal_rw_test
+   5) axi4l_ro_test
+   6) axi4l_unaligned_test
+   7) axi4l_wo_test
+   8) axi4l_write_bug_test
+   9) axi4l_write_test
+  10) axi4l_read_test
+```
+
+---
+
+### 3. Run a Single Test
+
+**Interactive mode** — lists tests, prompts for number/name and verbosity:
+```bash
+make simulate
+```
+
+**By index** — run test #4 at default verbosity (UVM_MEDIUM):
+```bash
+make simulate 4
+```
+
+**By index + verbosity**:
+```bash
+make simulate 4 high
+# verbosity options: low | medium | high | full | debug
+```
+
+**By name**:
+```bash
+make simulate axi4l_normal_rw_test high
+```
+
+After the run, a green/red banner prints the UVM message summary:
+```
+--------------------------------------------------
+  SIMULATION SUCCESS : axi4l_normal_rw_test
+--------------------------------------------------
+  UVM_INFO:843  UVM_WARNING:0  UVM_ERROR:0  UVM_FATAL:0
+--------------------------------------------------
+```
+
+`make sim` is a shorthand alias for `make simulate`.
+
+---
+
+### 4. Regression — Run All Tests + Merge Coverage
+
+`make merge` is the **full regression recipe**. It:
+1. Compiles once
+2. Runs every auto-discovered test into a **single shared coverage database** (`cov_work.vdb`) so all test contributions are merged correctly by `urg`
+3. Generates a merged HTML + text coverage report in `cov_report_merged/`
+4. Prints a final pass/fail summary across all tests
+
+```bash
+make merge
+```
+
+Example output:
+```
+Running 10 tests into shared coverage db cov_work.vdb...
+  -> axi4l_normal_rw_test     PASSED
+  -> axi4l_ro_test             PASSED
+  -> axi4l_wo_test             PASSED
+  -> axi4l_decerr_test         PASSED
+  -> axi4l_unaligned_test      PASSED
+  -> axi4l_concurrent_test     PASSED
+  -> axi4l_fully_rand_test     PASSED
+  -> axi4l_write_bug_test      FAILED  (see merge_axi4l_write_bug_test.log)
+  ...
+--------------------------------------------------
+  MERGE COMPLETE
+--------------------------------------------------
+  Tests run: 10   Passed: 9   Failed: 1
+  HTML dashboard : cov_report_merged/dashboard.html
+--------------------------------------------------
+```
+
+Each failed test generates its own `merge_<testname>.log` for triage.
+
+---
+
+### 5. Single-Test Coverage Report
+
+After running one test (via `make simulate`), generate coverage for that run alone:
+
+```bash
+make coverage
+```
+
+Report lands in `cov_report/`. To view the HTML dashboard in a browser (file:// won't render the score table correctly):
+
+```bash
+cd cov_report && python3 -m http.server 8000
+# open http://localhost:8000/dashboard.html
+```
+
+---
+
+### 6. Clean
+
+Removes all simulation artifacts, coverage databases, and logs:
+
+```bash
+make clean
+```
+
+---
+
+### Makefile Target Summary
+
+| Target | What it does |
 |---|---|
-| `make compile` | Compile RTL + TB |
-| `make TEST=<name>` | Run a specific test |
-| `make regress` | Run full regression list |
-| `make clean` | Remove sim artifacts |
-| `make cov_report` | Generate coverage report |
+| `make compile` | Compile RTL + TB with full coverage instrumentation |
+| `make tests` | List all auto-discovered UVM test classes |
+| `make simulate` | Interactive: pick test + verbosity from prompt |
+| `make simulate <N>` | Run test #N from discovered list (UVM_MEDIUM) |
+| `make simulate <N> <verb>` | Run test #N with explicit verbosity |
+| `make simulate <name> <verb>` | Run test by class name |
+| `make sim` | Alias for `make simulate` |
+| `make merge` | **Full regression**: run all tests → merge coverage → summary |
+| `make coverage` | Generate coverage report from last single-test run |
+| `make clean` | Remove all build/sim/coverage artifacts |
 
 ---
 
