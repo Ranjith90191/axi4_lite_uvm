@@ -9,6 +9,7 @@ package axi4l_pkg;
   `include "axi4l_ref_model.sv"
   `include "axi4l_scoreboard.sv"
   `include "axi4l_agent.sv"
+  `include "axi4l_coverage.sv"
   `include "axi4l_env.sv"
   `include "axi4l_sequence.sv"
   `include "axi4l_test.sv"

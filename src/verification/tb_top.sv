@@ -11,8 +11,8 @@ module tb_top;
   end
 
   initial begin
-  ARESETn = 0;
-  #5; 
+  	ARESETn = 0;
+  	#5; 
     ARESETn = 1; 
   end
 
@@ -48,6 +48,33 @@ module tb_top;
     .RRESP   (vif.RRESP),
     .RVALID  (vif.RVALID),
     .RREADY  (vif.RREADY)
+  );
+
+bind axi4_lite_slave axi4_lite_sva #(
+    .DATA_WIDTH(DATA_WIDTH),
+    .ADDR_WIDTH(ADDR_WIDTH)
+  ) sva_inst (
+    .ACLK(ACLK),
+    .ARESETn(ARESETn),
+    .AWADDR(AWADDR),
+    .AWPROT(AWPROT),
+    .AWVALID(AWVALID),
+    .AWREADY(AWREADY),
+    .WDATA(WDATA),
+    .WSTRB(WSTRB),
+    .WVALID(WVALID),
+    .WREADY(WREADY),
+    .BRESP(BRESP),
+    .BVALID(BVALID),
+    .BREADY(BREADY),
+    .ARADDR(ARADDR),
+    .ARPROT(ARPROT),
+    .ARVALID(ARVALID),
+    .ARREADY(ARREADY),
+    .RDATA(RDATA),
+    .RRESP(RRESP),
+    .RVALID(RVALID),
+    .RREADY(RREADY)
   );
 
   initial begin
