@@ -3,7 +3,7 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
 
   virtual axi4l_if.DRV vif;
   axi4l_seq_item wr_req_q[$],rd_req_q[$];
-  axi4l_seq_item aw_q[$],w_q[$],ar_q[$],b_q[$],r_q[$];
+  axi4l_seq_item aw_q[$],w_q[$],ar_q[$];
 
   function new(string name="axi4l_driver", uvm_component parent=null);
     super.new(name, parent);
@@ -106,7 +106,7 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
       `uvm_info("AR_TRACE", "AR handshake done", UVM_FULL)
     end
   endtask
-
+/*
   virtual task b_thread();
     forever begin
       axi4l_seq_item r;
@@ -124,7 +124,7 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
       wait (r_q.size() > 0); r = r_q.pop_front();
     end
   endtask
-
+*/
   virtual task reset_signals();
     vif.drv_cb.AWVALID <= 0;
     vif.drv_cb.WVALID  <= 0;
