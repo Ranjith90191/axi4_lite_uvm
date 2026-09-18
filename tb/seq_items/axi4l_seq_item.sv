@@ -1,6 +1,6 @@
 class axi4l_seq_item extends uvm_sequence_item;
   rand bit [1:0] txn_sel;
-  rand bit [11:0] wait_cfg_vector; 
+  rand bit [19:0] wait_cfg_vector;
 
   rand bit [31:0] AWADDR;
   rand bit [2:0]  AWPROT;

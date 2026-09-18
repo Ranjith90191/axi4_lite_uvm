@@ -3,7 +3,7 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
 
   virtual axi4l_if.DRV vif;
   axi4l_seq_item wr_req_q[$],rd_req_q[$];
-  axi4l_seq_item aw_q[$],w_q[$],ar_q[$];
+  axi4l_seq_item aw_q[$],w_q[$],ar_q[$],b_a[$],r_q[$];
 
   function new(string name="axi4l_driver", uvm_component parent=null);
     super.new(name, parent);
@@ -25,6 +25,8 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
       aw_thread();
       w_thread();
       ar_thread();
+      b_thread();
+      r_thread();
     join
   endtask
 
@@ -44,7 +46,7 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
       axi4l_seq_item r;
       wait (wr_req_q.size() > 0);
       r = wr_req_q.pop_front();
-      aw_q.push_back(r); w_q.push_back(r);
+      aw_q.push_back(r); w_q.push_back(r);b_q.push_back(r);
       wait (aw_q.size() == 0 && w_q.size() == 0 && b_q.size() == 0);
     end
   endtask
@@ -54,7 +56,7 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
       axi4l_seq_item r;
       wait (rd_req_q.size() > 0);
       r = rd_req_q.pop_front();
-      ar_q.push_back(r);
+      ar_q.push_back(r);r_q[$];
       wait (ar_q.size() == 0 && r_q.size() == 0);
     end
   endtask
@@ -70,7 +72,6 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
       vif.drv_cb.AWVALID <= 1;
       do @(vif.drv_cb); while (!vif.drv_cb.AWREADY);
       vif.drv_cb.AWVALID <= 0;
-      b_q.push_back(r);
          `uvm_info("AW_TRACE", "AW handshake done", UVM_FULL)
     end
   endtask
@@ -100,30 +101,33 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
       vif.drv_cb.ARVALID <= 1;
       do @(vif.drv_cb); while (!vif.drv_cb.ARREADY);
       vif.drv_cb.ARVALID <= 0;
-      r_q.push_back(r);
       `uvm_info("AR_TRACE", "AR handshake done", UVM_FULL)
     end
   endtask
 
-/*
   virtual task b_thread();
     forever begin
       axi4l_seq_item r;
-      vif.drv_cb.BREADY <= 1;
+      b_q.pop_front(r);
       while (!vif.drv_cb.BVALID) @(vif.drv_cb);
-      wait (b_q.size() > 0); r = b_q.pop_front();
+      repeat@(r.wait_cfg_vector[15:12])begin
+        @(vif.drv_cb);
+      end
+      vif.drv_cb.BREADY <= 1;
     end
   endtask
 
   virtual task r_thread();
     forever begin
       axi4l_seq_item r;
-      vif.drv_cb.RREADY <= 1;
+      r_q.pop_front(r);
       while (!vif.drv_cb.RVALID) @(vif.drv_cb);
-      wait (r_q.size() > 0); r = r_q.pop_front();
-    end
+      repeat@(r.wait_cfg_vector[19:16])begin
+        @(vif.drv_cb);
+      end
+      vif.drv_cb.RREADY <=1;
+      end
   endtask
-*/
 
   virtual task reset_signals();
     vif.drv_cb.AWVALID <= 0;
