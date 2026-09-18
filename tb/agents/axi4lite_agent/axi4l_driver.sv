@@ -25,8 +25,6 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
       aw_thread();
       w_thread();
       ar_thread();
-      b_thread();
-      r_thread();
     join
   endtask
 
@@ -106,6 +104,7 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
       `uvm_info("AR_TRACE", "AR handshake done", UVM_FULL)
     end
   endtask
+
 /*
   virtual task b_thread();
     forever begin
@@ -125,6 +124,7 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
     end
   endtask
 */
+
   virtual task reset_signals();
     vif.drv_cb.AWVALID <= 0;
     vif.drv_cb.WVALID  <= 0;
