@@ -3,7 +3,7 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
 
   virtual axi4l_if.DRV vif;
   axi4l_seq_item wr_req_q[$],rd_req_q[$];
-  axi4l_seq_item aw_q[$],w_q[$],ar_q[$],b_a[$],r_q[$];
+  axi4l_seq_item aw_q[$],w_q[$],ar_q[$],b_q[$],r_q[$];
 
   function new(string name="axi4l_driver", uvm_component parent=null);
     super.new(name, parent);
@@ -56,7 +56,7 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
       axi4l_seq_item r;
       wait (rd_req_q.size() > 0);
       r = rd_req_q.pop_front();
-      ar_q.push_back(r);r_q[$];
+      ar_q.push_back(r);r_q.push_back(r);
       wait (ar_q.size() == 0 && r_q.size() == 0);
     end
   endtask
@@ -108,9 +108,10 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
   virtual task b_thread();
     forever begin
       axi4l_seq_item r;
-      b_q.pop_front(r);
+      wait(b_q.size>0);
+      r=b_q.pop_front();
       while (!vif.drv_cb.BVALID) @(vif.drv_cb);
-      repeat@(r.wait_cfg_vector[15:12])begin
+      repeat(r.wait_cfg_vector[15:12])begin
         @(vif.drv_cb);
       end
       vif.drv_cb.BREADY <= 1;
@@ -120,9 +121,10 @@ class axi4l_driver extends uvm_driver #(axi4l_seq_item);
   virtual task r_thread();
     forever begin
       axi4l_seq_item r;
-      r_q.pop_front(r);
+      wait(r_q.size>0);
+      r=r_q.pop_front();
       while (!vif.drv_cb.RVALID) @(vif.drv_cb);
-      repeat@(r.wait_cfg_vector[19:16])begin
+      repeat(r.wait_cfg_vector[19:16])begin
         @(vif.drv_cb);
       end
       vif.drv_cb.RREADY <=1;
